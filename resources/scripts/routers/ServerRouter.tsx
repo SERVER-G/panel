@@ -28,6 +28,8 @@ import ErrorBoundary from '@/components/elements/ErrorBoundary';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import RequireServerPermission from '@/hoc/RequireServerPermission';
+// PlayerManager MG
+import PlayerManagerContainer from '@/components/server/playermanager/PlayerManagerContainer';
 import ServerInstallSvg from '@/assets/images/server_installing.svg';
 import ServerRestoreSvg from '@/assets/images/server_restore.svg';
 import ServerErrorSvg from '@/assets/images/server_error.svg';
@@ -69,6 +71,8 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
     const serverId = ServerContext.useStoreState(state => state.server.data?.internalId);
     const getServer = ServerContext.useStoreActions(actions => actions.server.getServer);
     const clearServerState = ServerContext.useStoreActions(actions => actions.clearServerState);
+    // PlayerManager MG
+    const nestId = ServerContext.useStoreState(state => state.server.data?.nestId);
 
     useEffect(() => () => {
         clearServerState();
@@ -105,6 +109,12 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                                 <Can action={'file.*'}>
                                     <NavLink to={`${match.url}/files`}>File Manager</NavLink>
                                 </Can>
+                                {/* PlayerManager MG */}
+                                {nestId === 1 &&
+                                    <Can action={'playermanager.*'}>
+                                        <NavLink to={`${match.url}/playermanager`}>Player Manager</NavLink>
+                                    </Can>
+                                }
                                 <Can action={'database.*'}>
                                     <NavLink to={`${match.url}/databases`}>Databases</NavLink>
                                 </Can>
@@ -154,6 +164,14 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                                             <FileEditContainer/>
                                         </Spinner.Suspense>
                                     </Route>
+                                    {/* PlayerManager MG */}
+                                    {nestId === 1 &&
+                                        <Route path={`${match.path}/playermanager`} exact>
+                                            <RequireServerPermission permissions={'playermanager.*'}>
+                                                <PlayerManagerContainer />
+                                            </RequireServerPermission>
+                                        </Route>
+                                    }
                                     <Route path={`${match.path}/databases`} exact>
                                         <RequireServerPermission permissions={'database.*'}>
                                             <DatabasesContainer/>

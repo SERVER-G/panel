@@ -9,6 +9,8 @@ import isEqual from 'react-fast-compare';
 import PowerControls from '@/components/server/PowerControls';
 import { EulaModalFeature, JavaVersionModalFeature, GSLTokenModalFeature, PIDLimitModalFeature, SteamDiskSpaceFeature } from '@feature/index';
 import ErrorBoundary from '@/components/elements/ErrorBoundary';
+// PlayerInformations MG
+import ServerInformation from './players/ServerInformation';
 import Spinner from '@/components/elements/Spinner';
 
 export type PowerAction = 'start' | 'stop' | 'restart' | 'kill';
@@ -45,9 +47,13 @@ const ServerConsole = () => {
                             </ContentContainer>
                         </div>
                         :
-                        <Can action={[ 'control.start', 'control.stop', 'control.restart' ]} matchAny>
-                            <PowerControls/>
-                        </Can>
+                        // PlayerInformations MG
+                        <>
+                            <ServerInformation />
+                            <Can action={[ 'control.start', 'control.stop', 'control.restart' ]} matchAny>
+                                <PowerControls/>
+                            </Can>
+                        </>
                 }
             </div>
             <div css={tw`w-full lg:w-3/4 mt-4 lg:mt-0 lg:pl-4`}>

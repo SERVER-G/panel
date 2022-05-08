@@ -10,6 +10,8 @@ import GreyRowBox from '@/components/elements/GreyRowBox';
 import Spinner from '@/components/elements/Spinner';
 import styled from 'styled-components/macro';
 import isEqual from 'react-fast-compare';
+// PlayerInformations MG
+import PlayersCounter from "@/components/server/players/PlayersCounter";
 
 // Determines if the current value is in an alarm threshold so we can show it in red rather
 // than the more faded default style.
@@ -101,6 +103,8 @@ export default ({ server, className }: { server: Server; className?: string }) =
                             </React.Fragment>
                         ))
                     }
+                    {/* PlayerInformations MG */}
+                    <PlayersCounter uuid={server.uuid} />
                 </p>
             </div>
             <div css={tw`hidden col-span-7 lg:col-span-4 sm:flex items-baseline justify-center`}>

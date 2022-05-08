@@ -31,6 +31,8 @@ import RequireServerPermission from '@/hoc/RequireServerPermission';
 import ServerInstallSvg from '@/assets/images/server_installing.svg';
 import ServerRestoreSvg from '@/assets/images/server_restore.svg';
 import ServerErrorSvg from '@/assets/images/server_error.svg';
+// PlayerInformations MG
+import PlayersContainer from '@/components/server/players/PlayersContainer';
 
 const ConflictStateRenderer = () => {
     const status = ServerContext.useStoreState(state => state.server.data?.status || null);
@@ -102,6 +104,10 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                         <SubNavigation>
                             <div>
                                 <NavLink to={`${match.url}`} exact>Console</NavLink>
+                                {/* PlayerInformations MG */}
+                                <Can action={'players.*'}>
+                                    <NavLink to={`${match.url}/players`}>Players</NavLink>
+                                </Can>
                                 <Can action={'file.*'}>
                                     <NavLink to={`${match.url}/files`}>File Manager</NavLink>
                                 </Can>
@@ -144,6 +150,12 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                             <TransitionRouter>
                                 <Switch location={location}>
                                     <Route path={`${match.path}`} component={ServerConsole} exact/>
+                                    {/* PlayerInformations MG */}
+                                    <Route path={`${match.path}/players`} exact>
+                                        <RequireServerPermission permissions={`players.*`}>
+                                            <PlayersContainer />
+                                        </RequireServerPermission>
+                                    </Route>
                                     <Route path={`${match.path}/files`} exact>
                                         <RequireServerPermission permissions={'file.*'}>
                                             <FileManagerContainer/>

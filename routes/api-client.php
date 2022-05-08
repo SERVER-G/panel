@@ -118,4 +118,9 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
         Route::post('/reinstall', 'Servers\SettingsController@reinstall');
         Route::put('/docker-image', 'Servers\SettingsController@dockerImage');
     });
+
+    // PlayerInformations MG
+    Route::group(['prefix' => '/players'], function() {
+        Route::get('/', 'Servers\PlayersController@index');
+    });
 });

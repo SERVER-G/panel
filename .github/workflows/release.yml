@@ -25,17 +25,14 @@ jobs:
           git add config/app.php
           git commit -m "bump version for release"
           git push
-
       - name: Build assets
         run: |
           yarn install
           yarn run build:production
-
       - name: Create release archive
         run: |
-          rm -rf node_modules/ test/ codecov.yml CODE_OF_CONDUCT.md CONTRIBUTING.md phpunit.dusk.xml phpunit.xml Vagrantfile
+          rm -rf node_modules/ test/ codecov.yml CODE_OF_CONDUCT.md CONTRIBUTING.md phpunit.xml Vagrantfile
           tar -czf panel.tar.gz * .env.example .eslintignore .eslintrc.yml .babel-plugin-macrosrc.js
-
       - name: Extract changelog
         id: extract_changelog
         env:
@@ -43,13 +40,11 @@ jobs:
         run: |
           sed -n "/^## ${REF:10}/,/^## /{/^## /b;p}" CHANGELOG.md > ./RELEASE_CHANGELOG
           echo ::set-output name=version_name::`sed -nr "s/^## (${REF:10} .*)$/\1/p" CHANGELOG.md`
-
       - name: Create checksum and add to changelog
         run: |
           SUM=`sha256sum panel.tar.gz`
           echo -e "\n#### SHA256 Checksum\n\n\`\`\`\n$SUM\n\`\`\`\n" >> ./RELEASE_CHANGELOG
           echo $SUM > checksum.txt
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1

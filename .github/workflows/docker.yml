@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - 'develop'
+      - 'servgcustom'
     tags:
       - 'v*'
 jobs:
@@ -11,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     # Always run against a tag, even if the commit into the tag has [docker skip]
     # within the commit message.
-    if: "!contains(github.ref, 'develop') || (!contains(github.event.head_commit.message, 'skip docker') && !contains(github.event.head_commit.message, 'docker skip'))"
+    if: "!contains(github.ref, 'servgcustom') || (!contains(github.event.head_commit.message, 'skip docker') && !contains(github.event.head_commit.message, 'docker skip'))"
     steps:
       - uses: actions/checkout@v2
       - uses: crazy-max/ghaction-docker-meta@v1
@@ -26,14 +27,14 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.REGISTRY_TOKEN }}
       - name: Bump Version
-        if: "!contains(github.ref, 'develop')"
+        if: "!contains(github.ref, 'servgcustom')"
         env:
           REF: ${{ github.ref }}
         run: |
           sed -i "s/    'version' => 'canary',/    'version' => '${REF:11}',/" config/app.php
       - name: Release Production Build
         uses: docker/build-push-action@v2
-        if: "!contains(github.ref, 'develop')"
+        if: "!contains(github.ref, 'servgcustom')"
         with:
           push: true
           platforms: linux/amd64,linux/arm64
@@ -41,7 +42,7 @@ jobs:
           labels: ${{ steps.docker_meta.outputs.labels }}
       - name: Release Development Build
         uses: docker/build-push-action@v2
-        if: "contains(github.ref, 'develop')"
+        if: "contains(github.ref, 'servgcustom')"
         with:
           push: ${{ github.event_name != 'pull_request' }}
           platforms: linux/amd64,linux/arm64

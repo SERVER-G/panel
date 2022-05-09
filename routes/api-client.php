@@ -69,12 +69,6 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
         Route::get('/upload', 'Servers\FileUploadController');
     });
 
-    // PlayerManager MG
-    Route::group(['prefix' => '/playermanager', 'middleware' => \Pterodactyl\Http\Middleware\Api\Client\Server\IsMinecraft::class], function () {
-        Route::get('/', 'Servers\MinecraftPlayerManagerController@index');
-        Route::post('/command', 'Servers\MinecraftPlayerManagerController@runCommand');
-    });
-
     Route::group(['prefix' => '/schedules'], function () {
         Route::get('/', 'Servers\ScheduleController@index');
         Route::post('/', 'Servers\ScheduleController@store');
@@ -123,5 +117,11 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
         Route::post('/rename', 'Servers\SettingsController@rename');
         Route::post('/reinstall', 'Servers\SettingsController@reinstall');
         Route::put('/docker-image', 'Servers\SettingsController@dockerImage');
+    });
+
+    // PlayerManager MG
+    Route::group(['prefix' => '/playermanager', 'middleware' => \Pterodactyl\Http\Middleware\Api\Client\Server\IsMinecraft::class], function () {
+        Route::get('/', 'Servers\MinecraftPlayerManagerController@index');
+        Route::post('/command', 'Servers\MinecraftPlayerManagerController@runCommand');
     });
 });

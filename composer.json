@@ -18,6 +18,7 @@
         "ext-pdo_mysql": "*",
         "ext-zip": "*",
         "aws/aws-sdk-php": "^3.171",
+        "cloudflare/sdk": "dev-master",
         "doctrine/dbal": "^2.12",
         "fideloper/proxy": "^4.4",
         "guzzlehttp/guzzle": "^7.2",

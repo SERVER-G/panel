@@ -113,6 +113,13 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
         Route::put('/variable', 'Servers\StartupController@update');
     });
 
+    Route::group(['prefix' => '/subdomain'], function () {
+        Route::get('/', 'Servers\SubdomainController@index');
+        Route::post('/create', 'Servers\SubdomainController@create');
+        Route::delete('/delete/{id}', 'Servers\SubdomainController@delete');
+    });
+
+
     Route::group(['prefix' => '/settings'], function () {
         Route::post('/rename', 'Servers\SettingsController@rename');
         Route::post('/reinstall', 'Servers\SettingsController@reinstall');

@@ -28,6 +28,7 @@ import ErrorBoundary from '@/components/elements/ErrorBoundary';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import RequireServerPermission from '@/hoc/RequireServerPermission';
+import SubdomainContainer from '@/components/server/subdomain/SubdomainContainer';
 import ServerInstallSvg from '@/assets/images/server_installing.svg';
 import ServerRestoreSvg from '@/assets/images/server_restore.svg';
 import ServerErrorSvg from '@/assets/images/server_error.svg';
@@ -123,6 +124,9 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                                 <Can action={'startup.*'}>
                                     <NavLink to={`${match.url}/startup`}>Startup</NavLink>
                                 </Can>
+                                <Can action={'subdomain.*'}>
+                                    <NavLink to={`${match.url}/subdomain`}>Subdomain</NavLink>
+                                </Can>
                                 <Can action={[ 'settings.*', 'file.sftp' ]} matchAny>
                                     <NavLink to={`${match.url}/settings`}>Settings</NavLink>
                                 </Can>
@@ -184,6 +188,11 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                                     </Route>
                                     <Route path={`${match.path}/startup`} component={StartupContainer} exact/>
                                     <Route path={`${match.path}/settings`} component={SettingsContainer} exact/>
+                                    <Route path={`${match.path}/subdomain`} exact>
+                                        <RequireServerPermission permissions={'subdomain.*'}>
+                                            <SubdomainContainer />
+                                        </RequireServerPermission>
+                                    </Route>
                                     <Route path={'*'} component={NotFound}/>
                                 </Switch>
                             </TransitionRouter>

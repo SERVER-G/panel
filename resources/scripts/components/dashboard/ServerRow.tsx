@@ -103,8 +103,7 @@ export default ({ server, className }: { server: Server; className?: string }) =
                             </React.Fragment>
                         ))
                     }
-                    {/* PlayerInformations MG */}
-                    <PlayersCounter uuid={server.uuid} />
+
                 </p>
             </div>
             <div css={tw`hidden col-span-7 lg:col-span-4 sm:flex items-baseline justify-center`}>
@@ -162,6 +161,8 @@ export default ({ server, className }: { server: Server; className?: string }) =
                             </div>
                             <p css={tw`text-xs text-neutral-600 text-center mt-1`}>of {diskLimit}</p>
                         </div>
+                        {/* PlayerInformations MG */}
+                        <PlayersCounter uuid={server.uuid} />
                     </React.Fragment>
                 }
             </div>

@@ -103,34 +103,34 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                     <CSSTransition timeout={150} classNames={'fade'} appear in>
                         <SubNavigation>
                             <div>
-                                <NavLink to={`${match.url}`} exact>Console</NavLink>
+                                <NavLink to={`${match.url}`} exact>コンソール</NavLink>
                                 {/* PlayerInformations MG */}
                                 <Can action={'players.*'}>
-                                    <NavLink to={`${match.url}/players`}>Players</NavLink>
+                                    <NavLink to={`${match.url}/players`}>プレイヤー情報</NavLink>
                                 </Can>
                                 <Can action={'file.*'}>
-                                    <NavLink to={`${match.url}/files`}>File Manager</NavLink>
+                                    <NavLink to={`${match.url}/files`}>ファイル</NavLink>
                                 </Can>
                                 <Can action={'database.*'}>
-                                    <NavLink to={`${match.url}/databases`}>Databases</NavLink>
+                                    <NavLink to={`${match.url}/databases`}>データベース</NavLink>
                                 </Can>
                                 <Can action={'schedule.*'}>
-                                    <NavLink to={`${match.url}/schedules`}>Schedules</NavLink>
+                                    <NavLink to={`${match.url}/schedules`}>スケジュール</NavLink>
                                 </Can>
                                 <Can action={'user.*'}>
-                                    <NavLink to={`${match.url}/users`}>Users</NavLink>
+                                    <NavLink to={`${match.url}/users`}>サブ管理人</NavLink>
                                 </Can>
                                 <Can action={'backup.*'}>
-                                    <NavLink to={`${match.url}/backups`}>Backups</NavLink>
+                                    <NavLink to={`${match.url}/backups`}>バックアップ</NavLink>
                                 </Can>
                                 <Can action={'allocation.*'}>
-                                    <NavLink to={`${match.url}/network`}>Network</NavLink>
+                                    <NavLink to={`${match.url}/network`}>ネットワーク</NavLink>
                                 </Can>
                                 <Can action={'startup.*'}>
-                                    <NavLink to={`${match.url}/startup`}>Startup</NavLink>
+                                    <NavLink to={`${match.url}/startup`}>起動引数</NavLink>
                                 </Can>
                                 <Can action={[ 'settings.*', 'file.sftp' ]} matchAny>
-                                    <NavLink to={`${match.url}/settings`}>Settings</NavLink>
+                                    <NavLink to={`${match.url}/settings`}>設定</NavLink>
                                 </Can>
                                 {rootAdmin &&
                                 <a href={'/admin/servers/view/' + serverId} rel="noreferrer" target={'_blank'}>

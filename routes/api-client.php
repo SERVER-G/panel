@@ -119,10 +119,14 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
         Route::delete('/delete/{id}', 'Servers\SubdomainController@delete');
     });
 
-
     Route::group(['prefix' => '/settings'], function () {
         Route::post('/rename', 'Servers\SettingsController@rename');
         Route::post('/reinstall', 'Servers\SettingsController@reinstall');
         Route::put('/docker-image', 'Servers\SettingsController@dockerImage');
+    });
+
+    Route::group(['prefix' => '/minecraft', 'middleware' => [ IsMinecraftServer::class ]], function() {
+        Route::get('/properties', 'Servers\ServerProperties@index');
+        Route::put('/properties', 'Servers\ServerProperties@update');
     });
 });

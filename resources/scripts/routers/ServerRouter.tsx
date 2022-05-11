@@ -32,6 +32,8 @@ import SubdomainContainer from '@/components/server/subdomain/SubdomainContainer
 import ServerInstallSvg from '@/assets/images/server_installing.svg';
 import ServerRestoreSvg from '@/assets/images/server_restore.svg';
 import ServerErrorSvg from '@/assets/images/server_error.svg';
+import isEqual from 'react-fast-compare';
+import PropertiesContainer from '@/components/server/minecraft/properties/PropertiesContainer';
 
 const ConflictStateRenderer = () => {
     const status = ServerContext.useStoreState(state => state.server.data?.status || null);
@@ -70,6 +72,7 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
     const serverId = ServerContext.useStoreState(state => state.server.data?.internalId);
     const getServer = ServerContext.useStoreActions(actions => actions.server.getServer);
     const clearServerState = ServerContext.useStoreActions(actions => actions.clearServerState);
+    const eggFeatures = ServerContext.useStoreState(state => state.server.data?.eggFeatures, isEqual);
 
     useEffect(() => () => {
         clearServerState();
@@ -103,6 +106,11 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                         <SubNavigation>
                             <div>
                                 <NavLink to={`${match.url}`} exact>Console</NavLink>
+                                {eggFeatures?.includes('eula') && (
+                                    <Can action={'file.update'}>
+                                        <NavLink to={`${match.url}/properties`}>Server Properties</NavLink>
+                                    </Can>
+                                )}
                                 <Can action={'file.*'}>
                                     <NavLink to={`${match.url}/files`}>File Manager</NavLink>
                                 </Can>
@@ -148,6 +156,13 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                             <TransitionRouter>
                                 <Switch location={location}>
                                     <Route path={`${match.path}`} component={ServerConsole} exact/>
+                                    {eggFeatures?.includes('eula') && (
+                                        <Route path={`${match.path}/properties`} exact>
+                                            <RequireServerPermission permissions={'file.update'}>
+                                                <PropertiesContainer />
+                                            </RequireServerPermission>
+                                        </Route>
+                                    )}
                                     <Route path={`${match.path}/files`} exact>
                                         <RequireServerPermission permissions={'file.*'}>
                                             <FileManagerContainer/>

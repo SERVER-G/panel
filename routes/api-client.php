@@ -134,4 +134,9 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
         Route::get('/properties', 'Servers\ServerProperties@index');
         Route::put('/properties', 'Servers\ServerProperties@update');
     });
+
+    Route::group(['prefix' => 'versions'], function () {
+        Route::get('/', 'Servers\VersionChangerController@index');
+        Route::post('/switch', 'Servers\VersionChangerController@switch');
+    });
 });

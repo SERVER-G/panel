@@ -117,6 +117,13 @@ class Permission extends Model
             ],
         ],
 
+        'versions' => [
+            'description' => 'Change server version.',
+            'keys' => [
+                'manage' => 'Change server version.',
+            ],
+        ],
+
         'websocket' => [
             'description' => 'Allows the user to connect to the server websocket, giving them access to view console output and realtime server stats.',
             'keys' => [

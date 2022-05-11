@@ -76,6 +76,32 @@ Route::group(['prefix' => 'settings'], function () {
 
 /*
 |--------------------------------------------------------------------------
+| Minecraft Version Controller Routes
+|--------------------------------------------------------------------------
+|
+| Endpoint: /admin/version
+|
+*/
+Route::group(['prefix' => 'version'], function () {
+    Route::get('/', 'VersionController@groups')->name('admin.version');
+
+    Route::post('/group', 'VersionController@createGroup')->name('admin.version.group');
+
+    Route::delete('/group', 'VersionController@deleteGroup');
+
+    Route::group(['prefix' => '{group}'], function () {
+        Route::get('/', 'VersionController@versions')->name('admin.version.versions');
+
+        Route::post('/edit', 'VersionController@editGroup')->name('admin.version.group.edit');
+        Route::post('/version', 'VersionController@createVersion')->name('admin.version.version');
+        Route::post('/version/{version}/edit', 'VersionController@editVersion')->name('admin.version.version.edit');
+
+        Route::delete('/version', 'VersionController@deleteVersion');
+    });
+});
+
+/*
+|--------------------------------------------------------------------------
 | User Controller Routes
 |--------------------------------------------------------------------------
 |

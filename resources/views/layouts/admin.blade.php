@@ -133,6 +133,11 @@
                                 <i class="fa fa-globe"></i> <span>SubDomain Manager</span>
                             </a>
                         </li>
+                        <li class="{{ ! starts_with(Route::currentRouteName(), 'admin.version') ?: 'active' }}">
+                            <a href="{{ route('admin.version') }}">
+                                <i class="fa fa-code-fork"></i> <span>Minecraft Server Versions</span>
+                            </a>
+                        </li>
                     </ul>
                 </section>
             </aside>

@@ -126,6 +126,10 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
         Route::put('/docker-image', 'Servers\SettingsController@dockerImage');
     });
 
+    Route::group(['prefix' => '/players'], function() {
+        Route::get('/', 'Servers\PlayersController@index');
+    });
+
     Route::group(['prefix' => '/minecraft', 'middleware' => [ IsMinecraftServer::class ]], function() {
         Route::get('/properties', 'Servers\ServerProperties@index');
         Route::put('/properties', 'Servers\ServerProperties@update');

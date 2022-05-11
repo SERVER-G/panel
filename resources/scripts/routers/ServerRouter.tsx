@@ -32,6 +32,7 @@ import SubdomainContainer from '@/components/server/subdomain/SubdomainContainer
 import ServerInstallSvg from '@/assets/images/server_installing.svg';
 import ServerRestoreSvg from '@/assets/images/server_restore.svg';
 import ServerErrorSvg from '@/assets/images/server_error.svg';
+import PlayersContainer from '@/components/server/players/PlayersContainer';
 import isEqual from 'react-fast-compare';
 import PropertiesContainer from '@/components/server/minecraft/properties/PropertiesContainer';
 
@@ -106,6 +107,9 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                         <SubNavigation>
                             <div>
                                 <NavLink to={`${match.url}`} exact>Console</NavLink>
+                                <Can action={'players.*'}>
+                                    <NavLink to={`${match.url}/players`}>Players</NavLink>
+                                </Can>
                                 {eggFeatures?.includes('eula') && (
                                     <Can action={'file.update'}>
                                         <NavLink to={`${match.url}/properties`}>Server Properties</NavLink>
@@ -156,6 +160,11 @@ const ServerRouter = ({ match, location }: RouteComponentProps<{ id: string }>) 
                             <TransitionRouter>
                                 <Switch location={location}>
                                     <Route path={`${match.path}`} component={ServerConsole} exact/>
+                                    <Route path={`${match.path}/players`} exact>
+                                        <RequireServerPermission permissions={`players.*`}>
+                                            <PlayersContainer />
+                                        </RequireServerPermission>
+                                    </Route>
                                     {eggFeatures?.includes('eula') && (
                                         <Route path={`${match.path}/properties`} exact>
                                             <RequireServerPermission permissions={'file.update'}>

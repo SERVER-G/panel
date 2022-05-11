@@ -46,6 +46,7 @@ Route::group(['prefix' => '/servers/{server}', 'middleware' => [AuthenticateServ
 
     Route::post('/command', 'Servers\CommandController@index');
     Route::post('/power', 'Servers\PowerController@index');
+    Route::post('/sendlogs', 'Servers\HastebinController@sendToHastebin');
 
     Route::group(['prefix' => '/databases'], function () {
         Route::get('/', 'Servers\DatabaseController@index');

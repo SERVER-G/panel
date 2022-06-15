@@ -142,6 +142,10 @@ export default () => {
                     )}
                 </Pagination>
             }
+
+            with:
+
+            <SortableList />
         </PageContentBlock>
     );
 };

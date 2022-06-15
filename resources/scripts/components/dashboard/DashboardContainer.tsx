@@ -13,6 +13,8 @@ import useSWR from 'swr';
 import { PaginatedResult } from '@/api/http';
 import Pagination from '@/components/elements/Pagination';
 import { useLocation } from 'react-router-dom';
+import Sortable from 'sortablejs';
+import sortServer from '@/api/sortServer';
 
 export default () => {
     const { search } = useLocation();
@@ -47,6 +49,60 @@ export default () => {
         if (error) clearAndAddHttpError({ key: 'dashboard', error });
         if (!error) clearFlashes('dashboard');
     }, [ error ]);
+
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+    function SortableList() {
+        const [sortables, setSortables] = React.useState<Sortable | null>(null);
+        React.useEffect(() => {
+            if (!isMobile) {
+                var el = document.getElementById('list');
+                if (!sortables) {
+                    if (el && !showOnlyAdmin) {
+                        setSortables(Sortable.create(el, {
+                            forceFallback: true,
+
+                            onEnd: function (evt) {
+                                sortServer(evt.item.getAttribute("href")!.substring(8), evt.oldIndex, evt.newIndex);
+                            },
+                        }))
+                    }
+                }
+            }
+        })
+        return (
+            <>
+                {!servers ?
+                    <Spinner centered size={'large'}/>
+                    :
+                    <Pagination data={servers} onPageSelect={setPage}>
+                        {({ items }) => (
+                            items.length > 0 ?
+                                items.map((server, index) => (
+                                    <ServerRow
+                                        key={server.uuid}
+                                        server={server}
+                                        css={index > 0 ? tw`mt-2` : undefined}
+                                    />
+                                ))
+                                :
+                                <p css={tw`text-center text-sm text-neutral-400`}>
+                                    {showOnlyAdmin ?
+                                        'There are no other servers to display.'
+                                        :
+                                        'There are no servers associated with your account.'
+                                    }
+                                </p>
+                        )}
+                    </Pagination>
+                }
+
+                with:
+
+                <SortableList />
+            </>
+        )
+    }
 
     return (
         <PageContentBlock title={'Dashboard'} showFlashKey={'dashboard'}>

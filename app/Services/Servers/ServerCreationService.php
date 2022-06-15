@@ -157,6 +157,10 @@ class ServerCreationService
             $this->storeAssignedAllocations($server, $data);
             $this->storeEggVariables($server, $eggVariableData);
 
+            Server::where('id', $server->id)->update([
+                'position' => $server->id,
+            ]);
+
             return $server;
         }, 5);
 

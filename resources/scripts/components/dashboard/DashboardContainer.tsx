@@ -77,15 +77,17 @@ export default () => {
                     :
                     <Pagination data={servers} onPageSelect={setPage}>
                         {({ items }) => (
-                            items.length > 0 ?
-                                items.map((server, index) => (
-                                    <ServerRow
-                                        key={server.uuid}
-                                        server={server}
-                                        css={index > 0 ? tw`mt-2` : undefined}
-                                    />
-                                ))
-                                :
+                            items.length > 0 ? (
+                                <div id="list">
+                                    {items.map((server, index) => (
+                                        <ServerRow
+                                            key={server.uuid}
+                                            server={server}
+                                            css={tw`mt-2`}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
                                 <p css={tw`text-center text-sm text-neutral-400`}>
                                     {showOnlyAdmin ?
                                         'There are no other servers to display.'
@@ -93,13 +95,10 @@ export default () => {
                                         'There are no servers associated with your account.'
                                     }
                                 </p>
+                            )
                         )}
                     </Pagination>
                 }
-
-                with:
-
-                <SortableList />
             </>
         )
     }
@@ -107,44 +106,17 @@ export default () => {
     return (
         <PageContentBlock title={'Dashboard'} showFlashKey={'dashboard'}>
             {rootAdmin &&
-            <div css={tw`mb-2 flex justify-end items-center`}>
-                <p css={tw`uppercase text-xs text-neutral-400 mr-2`}>
-                    {showOnlyAdmin ? 'Showing others\' servers' : 'Showing your servers'}
-                </p>
-                <Switch
-                    name={'show_all_servers'}
-                    defaultChecked={showOnlyAdmin}
-                    onChange={() => setShowOnlyAdmin(s => !s)}
-                />
-            </div>
+                <div css={tw`mb-2 flex justify-end items-center`}>
+                    <p css={tw`uppercase text-xs text-neutral-400 mr-2`}>
+                        {showOnlyAdmin ? 'Showing others\' servers' : 'Showing your servers'}
+                    </p>
+                    <Switch
+                        name={'show_all_servers'}
+                        defaultChecked={showOnlyAdmin}
+                        onChange={() => setShowOnlyAdmin(s => !s)}
+                    />
+                </div>
             }
-            {!servers ?
-                <Spinner centered size={'large'}/>
-                :
-                <Pagination data={servers} onPageSelect={setPage}>
-                    {({ items }) => (
-                        items.length > 0 ?
-                            items.map((server, index) => (
-                                <ServerRow
-                                    key={server.uuid}
-                                    server={server}
-                                    css={index > 0 ? tw`mt-2` : undefined}
-                                />
-                            ))
-                            :
-                            <p css={tw`text-center text-sm text-neutral-400`}>
-                                {showOnlyAdmin ?
-                                    'There are no other servers to display.'
-                                    :
-                                    'There are no servers associated with your account.'
-                                }
-                            </p>
-                    )}
-                </Pagination>
-            }
-
-            with:
-
             <SortableList />
         </PageContentBlock>
     );
